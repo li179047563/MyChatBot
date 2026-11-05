@@ -1,30 +1,5 @@
  
 
-import bs4
-import requests
-
-
-def fetch_page(url: str) -> tuple[str, str]:
-    """
-    抓取页面
-    :param url: 统一资源定位符
-    :return: 网页标题和主体内容构成的二元组
-    """
-    resp = requests.get(
-        url=url,
-        headers={
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
-        },
-    )
-    if resp.status_code == 200:
-        soup = bs4.BeautifulSoup(resp.text, 'html.parser')
-        # 移除body标签下不包含文本内容的标签
-        for elem in soup.body(['script', 'link', 'nav', 'header', 'footer', 'form', 'input', 'button',
-                               'img', 'audio', 'video', 'area', 'canvas', 'map', 'object', 'embed']):
-            elem.decompose()
-        # 获取网页标题和主体内容返回二元组
-        return soup.title.text, soup.body.get_text(separator='\n', strip=True)
-    return '', ''
 
 
  
